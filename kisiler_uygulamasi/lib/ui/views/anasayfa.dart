@@ -18,7 +18,7 @@ class _AnasayfaState extends State<Anasayfa> {
         onPressed: (){
           Navigator.push(context, MaterialPageRoute(builder: (context)=> const KayitSayfasi()))
               .then((value){
-                print("Anasayfaya dönüldüdsdsds");
+                print("Anasayfaya dönüldü");
 
           });
         },
