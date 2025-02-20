@@ -12,7 +12,7 @@ class _AnasayfaState extends State<Anasayfa> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Kişiler"),),
+      appBar: AppBar(title: const Text("Kişilerrr"),),
       body: const Center(),
       floatingActionButton: FloatingActionButton(
         onPressed: (){
