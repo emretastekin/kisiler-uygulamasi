@@ -29,6 +29,9 @@ class _AnasayfaState extends State<Anasayfa> {
     return kisilerListesi;
   }
 
+  Future<void> sil(int kisi_id) async{
+    print("Kişi Sil : $kisi_id");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,25 +68,43 @@ class _AnasayfaState extends State<Anasayfa> {
               itemCount: kisilerListesi!.length,
               itemBuilder: (context,indeks){ //0,1,2 (indeksler 0'dan başlar)
                 var kisi = kisilerListesi[indeks];
-                return Card(
-                  child: SizedBox(height: 100,
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(kisi.kisi_ad, style: const TextStyle(fontSize: 20),),
-                              Text(kisi.kisi_tel),
-                            ],
+                return GestureDetector(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=> DetaySayfa(kisi: kisi)))
+                        .then((value){
+                      print("Anasayfaya dönüldü");
+                    });
+                  },
+                  child: Card(
+                    child: SizedBox(height: 100,
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(kisi.kisi_ad, style: const TextStyle(fontSize: 20),),
+                                Text(kisi.kisi_tel),
+                              ],
+                            ),
                           ),
-                        ),
-                        const Spacer(),
-                        IconButton(onPressed: (){
-
-                        }, icon: const Icon(Icons.clear, color: Colors.black54,))
-                      ],
+                          const Spacer(),
+                          IconButton(onPressed: (){
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                    content: Text("${kisi.kisi_ad} silinsin mi?"),
+                                    action: SnackBarAction(
+                                      label: "Evet",
+                                      onPressed: (){
+                                        sil(kisi.kisi_id);
+                                      } ,
+                                    ),
+                                )
+                            );
+                          }, icon: const Icon(Icons.clear, color: Colors.black54,))
+                        ],
+                      ),
                     ),
                   ),
                 );
