@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kisiler_uygulamasi/data/entity/kisiler.dart';
+import 'package:kisiler_uygulamasi/ui/cubit/anasayfa_cubit.dart';
 import 'package:kisiler_uygulamasi/ui/views/detay_sayfa.dart';
 import 'package:kisiler_uygulamasi/ui/views/kayit_sayfa.dart';
 
@@ -17,20 +19,16 @@ class _AnasayfaState extends State<Anasayfa> {
     print("Kişi Ara : $aramaKelimesi");
   }
 
-  Future<List<Kisiler>> kisileriYukle() async{
-    var kisilerListesi = <Kisiler>[];
-    var k1 = Kisiler(kisi_id: 1, kisi_ad: "Ahmet", kisi_tel: "1111");
-    var k2 = Kisiler(kisi_id: 2, kisi_ad: "Emre", kisi_tel: "2222");
-    var k3 = Kisiler(kisi_id: 3, kisi_ad: "Kenan", kisi_tel: "3333");
-    kisilerListesi.add(k1);
-    kisilerListesi.add(k2);
-    kisilerListesi.add(k3);
-
-    return kisilerListesi;
-  }
 
   Future<void> sil(int kisi_id) async{
     print("Kişi Sil : $kisi_id");
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    context.read<AnasayfaCubit>().kisileriYukle();
   }
 
   @override
@@ -59,13 +57,11 @@ class _AnasayfaState extends State<Anasayfa> {
           }, icon: const Icon(Icons.search))
         ],
       ),
-      body: FutureBuilder<List<Kisiler>>(
-        future: kisileriYukle(),
-        builder: (context,snapshot){
-          if(snapshot.hasData){
-            var kisilerListesi = snapshot.data;
+      body: BlocBuilder<AnasayfaCubit,List<Kisiler>>(
+        builder: (context, kisilerListesi){
+          if(kisilerListesi.isNotEmpty){
             return ListView.builder(
-              itemCount: kisilerListesi!.length,
+              itemCount: kisilerListesi.length,
               itemBuilder: (context,indeks){ //0,1,2 (indeksler 0'dan başlar)
                 var kisi = kisilerListesi[indeks];
                 return GestureDetector(
